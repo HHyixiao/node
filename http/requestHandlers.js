@@ -1,7 +1,7 @@
 /* 
 请求处理器
  */
-var exec = require("child_process").exec;
+var fs = require("fs");
 
 function start(response, Data) {
     console.log("Request handler(请求处理程序) 'start' was called(被调用).");
@@ -32,5 +32,29 @@ function upload(response, Data) {
     response.end();
 }
 
+function root(response, Data) {
+    console.log("Request handler(请求处理程序) 'root' was called(被调用).");
+
+    fs.readFile( __dirname + '/index.html', function (err, file) {
+        if (err) {
+            console.error(err);
+            response.writeHead(404, { "Content-Type": "text/plain" });
+            response.write("404 Not found");
+            response.end();
+        } else {
+            response.writeHead(200, {"Content-Type": "text/html;charset=UTF-8"});
+            response.write(file);
+            response.end();
+        }
+
+    });
+
+    // response.writeHead(200, {"Content-Type": "text/html;charset=UTF-8"});
+    // response.write("Hello World!");
+    // response.end();
+}
+
+
+exports.root = root;
 exports.start = start;
 exports.upload = upload;

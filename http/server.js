@@ -1,5 +1,13 @@
 var http = require("http");
 var url = require("url");
+var exec = require("child_process").exec;
+//netstat -ano | findstr "8114"
+
+var port = 8114;
+
+exec("ls -lah", function (error, stdout, stderr) {
+    content = stdout;
+});
 
 function start(route, handle) {
     function onRequest(request, response) {
@@ -17,8 +25,8 @@ function start(route, handle) {
 
     }
 
-    http.createServer(onRequest).listen(8888);
-    console.log("Server has started. Server running at http://127.0.0.1:8888/");
+    http.createServer(onRequest).listen(port);
+    console.log("Server has started. Server running at http://127.0.0.1:"+port+"/");
 }
 
 exports.start = start;
